@@ -1,4 +1,4 @@
-<p align="center">
+<h1 align="center">
   <header>
     <h1>A heading here</h1>
     <p>Posted by John Doe</p>
