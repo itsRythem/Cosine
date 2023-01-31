@@ -1,3 +1,3 @@
-<h1 align="center">
+<p align="center">
     <h1>A heading here</h1>
-</h1>
+</p>
