@@ -4,5 +4,6 @@
     <p>Posted by John Doe</p>
     <p>Some additional information here</p>
   </header>
+     <hr width="50%" color="green" />
 </p>
 ---------------------------------------------
