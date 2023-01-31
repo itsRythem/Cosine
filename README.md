@@ -1,4 +1,4 @@
 <p align="center">
-# Cosine Client
+#Cosine Client
 </p>
 ---------------------------------------------
