@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import team.cosine.Cosine;
 import team.cosine.module.settings.Setting;
 import team.cosine.module.settings.impl.Keybind;
+import team.cosine.module.settings.impl.Keybind.KeybindType;
 import team.cosine.ui.notifications.api.Notification;
 import team.cosine.ui.notifications.api.NotificationType;
 
@@ -28,7 +29,7 @@ public abstract class Module {
 		this.name = name;
 		this.description = description;
 		this.category = category;
-		this.keySetting = new Keybind("Keybind", key);
+		this.keySetting = new Keybind("Keybind", key, KeybindType.TOGGLE);
 		
 		this.registerSettings(keySetting);
 	}
@@ -76,6 +77,8 @@ public abstract class Module {
 	
 	public int getKey(){return this.keySetting.getKey();}
 	public void setKey(final int key){this.keySetting.setKey(key);}
+	
+	public Keybind getKeybind(){return this.keySetting;}
 	
 	public String getName(){return this.name;}
 	public String getDescription(){return this.description;}

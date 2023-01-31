@@ -1,7 +1,7 @@
 package team.cosine.module.impl.combat;
 
 import team.cosine.event.api.EventHook;
-import team.cosine.event.impl.MotionUpdateEvent;
+import team.cosine.event.impl.EventMotionUpdate;
 import team.cosine.module.api.Module;
 import team.cosine.module.api.ModuleCategory;
 
@@ -19,9 +19,9 @@ public class CrystalAura extends Module {
 	}
 	
 	@EventHook
-	public void onMotionUpdate(final MotionUpdateEvent event)
+	public void onMotionUpdate(final EventMotionUpdate event)
 	{
-		
+		mc.player.sendChatMessage("stupid nigger");
 	}
 
 }

@@ -81,9 +81,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import team.cosine.event.api.EventType;
-import team.cosine.event.impl.ChatEvent;
-import team.cosine.event.impl.MotionUpdateEvent;
-import team.cosine.event.impl.MoveEvent;
+import team.cosine.event.impl.EventChat;
+import team.cosine.event.impl.EventMotionUpdate;
+import team.cosine.event.impl.EventMove;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -298,7 +298,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
             
-        	final MotionUpdateEvent motionUpdateEvent = new MotionUpdateEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.lastReportedPosX, this.lastReportedPosY, this.lastReportedPosZ, this.rotationYaw, this.rotationPitch, this.lastReportedYaw, this.lastReportedPitch, this.onGround, EventType.PRE).call();
+        	final EventMotionUpdate motionUpdateEvent = new EventMotionUpdate(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.lastReportedPosX, this.lastReportedPosY, this.lastReportedPosZ, this.rotationYaw, this.rotationPitch, this.lastReportedYaw, this.lastReportedPitch, this.onGround, EventType.PRE).call();
         	
             double d0 = motionUpdateEvent.posX - motionUpdateEvent.prevPosX;
             double d1 = motionUpdateEvent.posY - motionUpdateEvent.prevPosY;
@@ -348,7 +348,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.prevOnGround = motionUpdateEvent.onGround;
             this.autoJumpEnabled = this.mc.gameSettings.autoJump;
             
-        	new MotionUpdateEvent(motionUpdateEvent.posX, motionUpdateEvent.posY, motionUpdateEvent.posZ, motionUpdateEvent.prevPosX, motionUpdateEvent.prevPosY, motionUpdateEvent.prevPosZ, motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.prevRotationYaw, motionUpdateEvent.prevRotationPitch, motionUpdateEvent.onGround, EventType.POST).call();
+        	new EventMotionUpdate(motionUpdateEvent.posX, motionUpdateEvent.posY, motionUpdateEvent.posZ, motionUpdateEvent.prevPosX, motionUpdateEvent.prevPosY, motionUpdateEvent.prevPosZ, motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.prevRotationYaw, motionUpdateEvent.prevRotationPitch, motionUpdateEvent.onGround, EventType.POST).call();
         }
     }
 
@@ -375,7 +375,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void sendChatMessage(String message)
     {
-    	final ChatEvent chatEvent = new ChatEvent(message).call();
+    	final EventChat chatEvent = new EventChat(message).call();
     	if(!chatEvent.isCancelled())
     		this.connection.sendPacket(new CPacketChatMessage(chatEvent.message));
     }
@@ -1176,7 +1176,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void moveEntity(MoverType type, double x, double y, double z)
     {
-    	final MoveEvent moveEvent = new MoveEvent(type, x, y, z).call();
+    	final EventMove moveEvent = new EventMove(type, x, y, z).call();
         
     	if(!moveEvent.isCancelled())
         	super.moveEntity(moveEvent.type, moveEvent.x, moveEvent.y, moveEvent.z);

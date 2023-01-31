@@ -2,7 +2,7 @@ package team.cosine.event.api;
 
 import team.cosine.Cosine;
 
-public class Event {
+public class Event<T> {
 
 	private boolean cancelled;
 	
@@ -10,7 +10,7 @@ public class Event {
 	{	
 	}
 	
-	public <T> T call()
+	public T call()
 	{
 		Cosine.get().getEventHandler().call(this);
 		return (T)this;

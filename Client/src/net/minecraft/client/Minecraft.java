@@ -203,6 +203,7 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 import team.cosine.Cosine;
+import team.cosine.animation.Animation;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
@@ -1254,6 +1255,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         long k = System.nanoTime();
         this.frameTimer.addFrame(k - this.startNanoTime);
+        Animation.DELTA = (k-this.startNanoTime)/1e+9;
         this.startNanoTime = k;
 
         while (getSystemTime() >= this.debugUpdateTime + 1000L)
@@ -2052,6 +2054,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
             boolean flag = Keyboard.getEventKeyState();
 
+            if (this.currentScreen == null)
+            {
+            	Cosine.get().getKeybindHandler().handle(i, flag);
+            }
+            
             if (flag)
             {
                 if (i == 62 && this.entityRenderer != null)

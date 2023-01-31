@@ -4,11 +4,11 @@ import net.minecraft.entity.MoverType;
 import team.cosine.event.api.Event;
 import team.cosine.event.api.EventType;
 
-public final class ChatEvent extends Event {
+public final class EventChat extends Event<EventChat> {
 	
 	public String message;
 	
-	public ChatEvent(final String message)
+	public EventChat(final String message)
 	{
 		this.message = message;
 	}

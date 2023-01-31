@@ -63,6 +63,7 @@ import optifine.CustomItems;
 import optifine.Reflector;
 import optifine.ReflectorForge;
 import optifine.TextureAnimations;
+import team.cosine.event.impl.EventRenderGui;
 
 public class GuiIngame extends Gui
 {
@@ -394,6 +395,8 @@ public class GuiIngame extends Gui
         {
             this.overlayPlayerList.updatePlayerList(false);
         }
+        
+        final EventRenderGui guiRenderEvent = new EventRenderGui(partialTicks).call();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();

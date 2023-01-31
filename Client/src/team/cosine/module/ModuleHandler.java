@@ -2,6 +2,7 @@ package team.cosine.module;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,10 +12,12 @@ import team.cosine.module.api.Module;
 import team.cosine.module.impl.combat.*;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public final class ModuleHandler extends Handler {
 	
-	private final Map<Class<? extends Module>, Module> modules = new HashMap<Class<? extends Module>, Module>();
+	private final ConcurrentMap<Class<? extends Module>, Module> modules = new ConcurrentHashMap<Class<? extends Module>, Module>();
 	
 	@Override
 	public void load()
