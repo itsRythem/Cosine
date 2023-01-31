@@ -1,3 +1,1 @@
-<p align="center">
-    <h1>A heading here</h1>
-</p>
+<p style="text-align: center;"><span style="font-family: Arial, Helvetica, sans-serif;"><strong><span style="font-size: 48px;"><u>Cosine Client</u></span></strong></span></p>
