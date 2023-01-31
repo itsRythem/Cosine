@@ -1,0 +1,17 @@
+***************
+*** 1310,1316 ****
+              if (this.func_175667_e(blockpos) && this.field_175728_M.func_177746_a(blockpos)) {
+                 try {
+                    this.field_72984_F.func_194340_a(() -> {
+-                      return String.valueOf((Object)TileEntity.func_190559_a(p_194305_0_.getClass()));
+                    });
+                    ((ITickable)tileentity).func_73660_a();
+                    this.field_72984_F.func_76319_b();
+--- 1310,1316 ----
+              if (this.func_175667_e(blockpos) && this.field_175728_M.func_177746_a(blockpos)) {
+                 try {
+                    this.field_72984_F.func_194340_a(() -> {
++                      return String.valueOf((Object)TileEntity.func_190559_a(tileentity.getClass()));
+                    });
+                    ((ITickable)tileentity).func_73660_a();
+                    this.field_72984_F.func_76319_b();
