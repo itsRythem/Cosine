@@ -1254,10 +1254,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         long k = System.nanoTime();
         this.frameTimer.addFrame(k - this.startNanoTime);
+        Cosine.get().frameDelta = (k-this.startNanoTime)/1e+9;
         this.startNanoTime = k;
 
         while (getSystemTime() >= this.debugUpdateTime + 1000L)
         {
+            System.out.println(Cosine.get().frameDelta);
             debugFPS = this.fpsCounter;
             this.debug = String.format("%d fps (%d chunk update%s) T: %s%s%s%s%s", debugFPS, RenderChunk.renderChunksUpdated, RenderChunk.renderChunksUpdated == 1 ? "" : "s", (float)this.gameSettings.limitFramerate == GameSettings.Options.FRAMERATE_LIMIT.getValueMax() ? "inf" : this.gameSettings.limitFramerate, this.gameSettings.enableVsync ? " vsync" : "", this.gameSettings.fancyGraphics ? "" : " fast", this.gameSettings.clouds == 0 ? "" : (this.gameSettings.clouds == 1 ? " fast-clouds" : " fancy-clouds"), OpenGlHelper.useVbo() ? " vbo" : "");
             RenderChunk.renderChunksUpdated = 0;

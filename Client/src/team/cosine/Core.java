@@ -10,6 +10,7 @@ public final class Core {
 	private final ModuleHandler moduleHandler = new ModuleHandler();
 	private final EventHandler eventHandler = new EventHandler();
 	private final NotificationHandler notificationHandler = new NotificationHandler();
+	public double frameDelta;
 	
 	public void load()
 	{
