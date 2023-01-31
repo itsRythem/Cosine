@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonSyntaxException;
 
-import dev.rythem.optimizations.culling.EntityCulling;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -117,6 +116,7 @@ import org.lwjgl.util.vector.Vector4f;
 import shadersmod.client.Shaders;
 import shadersmod.client.ShadersRender;
 import shadersmod.client.ShadowUtils;
+import team.optimizations.culling.EntityCulling;
 
 public class RenderGlobal implements IWorldEventListener, IResourceManagerReloadListener
 {

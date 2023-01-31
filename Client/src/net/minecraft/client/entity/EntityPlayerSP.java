@@ -2,6 +2,7 @@ package net.minecraft.client.entity;
 
 import java.util.List;
 import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
@@ -79,6 +80,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import team.cosine.event.api.EventType;
+import team.cosine.event.impl.ChatEvent;
+import team.cosine.event.impl.MotionUpdateEvent;
+import team.cosine.event.impl.MoveEvent;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -251,7 +256,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
     }
-
+    
     /**
      * called every tick when the player is on foot. Performs all the things that normally happen during movement.
      */
@@ -292,53 +297,58 @@ public class EntityPlayerSP extends AbstractClientPlayer
         if (this.isCurrentViewEntity())
         {
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
-            double d0 = this.posX - this.lastReportedPosX;
-            double d1 = axisalignedbb.minY - this.lastReportedPosY;
-            double d2 = this.posZ - this.lastReportedPosZ;
-            double d3 = (double)(this.rotationYaw - this.lastReportedYaw);
-            double d4 = (double)(this.rotationPitch - this.lastReportedPitch);
+            
+        	final MotionUpdateEvent motionUpdateEvent = new MotionUpdateEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.lastReportedPosX, this.lastReportedPosY, this.lastReportedPosZ, this.rotationYaw, this.rotationPitch, this.lastReportedYaw, this.lastReportedPitch, this.onGround, EventType.PRE).call();
+        	
+            double d0 = motionUpdateEvent.posX - motionUpdateEvent.prevPosX;
+            double d1 = motionUpdateEvent.posY - motionUpdateEvent.prevPosY;
+            double d2 = motionUpdateEvent.posZ - motionUpdateEvent.prevPosZ;
+            double d3 = (double)(motionUpdateEvent.rotationYaw - motionUpdateEvent.prevRotationYaw);
+            double d4 = (double)(motionUpdateEvent.rotationPitch - motionUpdateEvent.prevRotationPitch);
             ++this.positionUpdateTicks;
             boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20;
             boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
             if (this.isRiding())
             {
-                this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.motionX, -999.0D, this.motionZ, motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.onGround));
                 flag2 = false;
             }
             else if (flag2 && flag3)
             {
-                this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.posX, axisalignedbb.minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                this.connection.sendPacket(new CPacketPlayer.PositionRotation(motionUpdateEvent.posX, axisalignedbb.minY, motionUpdateEvent.posZ, motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.onGround));
             }
             else if (flag2)
             {
-                this.connection.sendPacket(new CPacketPlayer.Position(this.posX, axisalignedbb.minY, this.posZ, this.onGround));
+                this.connection.sendPacket(new CPacketPlayer.Position(motionUpdateEvent.posX, axisalignedbb.minY, motionUpdateEvent.posZ, motionUpdateEvent.onGround));
             }
             else if (flag3)
             {
-                this.connection.sendPacket(new CPacketPlayer.Rotation(this.rotationYaw, this.rotationPitch, this.onGround));
+                this.connection.sendPacket(new CPacketPlayer.Rotation(motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.onGround));
             }
-            else if (this.prevOnGround != this.onGround)
+            else if (this.prevOnGround != motionUpdateEvent.onGround)
             {
-                this.connection.sendPacket(new CPacketPlayer(this.onGround));
+                this.connection.sendPacket(new CPacketPlayer(motionUpdateEvent.onGround));
             }
-
+            
             if (flag2)
             {
-                this.lastReportedPosX = this.posX;
-                this.lastReportedPosY = axisalignedbb.minY;
-                this.lastReportedPosZ = this.posZ;
+                this.lastReportedPosX = motionUpdateEvent.posX;
+                this.lastReportedPosY = motionUpdateEvent.posY;
+                this.lastReportedPosZ = motionUpdateEvent.posZ;
                 this.positionUpdateTicks = 0;
             }
 
             if (flag3)
             {
-                this.lastReportedYaw = this.rotationYaw;
-                this.lastReportedPitch = this.rotationPitch;
+                this.lastReportedYaw = motionUpdateEvent.rotationYaw;
+                this.lastReportedPitch = motionUpdateEvent.rotationPitch;
             }
 
-            this.prevOnGround = this.onGround;
+            this.prevOnGround = motionUpdateEvent.onGround;
             this.autoJumpEnabled = this.mc.gameSettings.autoJump;
+            
+        	new MotionUpdateEvent(motionUpdateEvent.posX, motionUpdateEvent.posY, motionUpdateEvent.posZ, motionUpdateEvent.prevPosX, motionUpdateEvent.prevPosY, motionUpdateEvent.prevPosZ, motionUpdateEvent.rotationYaw, motionUpdateEvent.rotationPitch, motionUpdateEvent.prevRotationYaw, motionUpdateEvent.prevRotationPitch, motionUpdateEvent.onGround, EventType.POST).call();
         }
     }
 
@@ -365,7 +375,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void sendChatMessage(String message)
     {
-        this.connection.sendPacket(new CPacketChatMessage(message));
+    	final ChatEvent chatEvent = new ChatEvent(message).call();
+    	if(!chatEvent.isCancelled())
+    		this.connection.sendPacket(new CPacketChatMessage(chatEvent.message));
     }
 
     public void swingArm(EnumHand hand)
@@ -1162,11 +1174,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
     /**
      * Tries to move the entity towards the specified location.
      */
-    public void moveEntity(MoverType x, double p_70091_2_, double p_70091_4_, double p_70091_6_)
+    public void moveEntity(MoverType type, double x, double y, double z)
     {
+    	final MoveEvent moveEvent = new MoveEvent(type, x, y, z).call();
+        
+    	if(!moveEvent.isCancelled())
+        	super.moveEntity(moveEvent.type, moveEvent.x, moveEvent.y, moveEvent.z);
+        
         double d0 = this.posX;
         double d1 = this.posZ;
-        super.moveEntity(x, p_70091_2_, p_70091_4_, p_70091_6_);
         this.updateAutoJump((float)(this.posX - d0), (float)(this.posZ - d1));
     }
 
