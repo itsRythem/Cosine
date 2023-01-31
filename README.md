@@ -11,7 +11,7 @@
 		<img src="https://img.shields.io/discord/1070046787114643586?logo=discord" alt="discord"/>
 	</a>
 	<br>
-		<img src="https://img.shields.io/github/last-commit/itsRythem/Cosine" alt="gitHub last commit"/>
-		<img src="https://img.shields.io/github/contributors/itsRythem/Cosine" alt="gitHub contributors"/>
+		<img src="https://img.shields.io/github/last-commit/itsRythem/Cosine" alt="github last commit"/>
+		<img src="https://img.shields.io/github/contributors/itsRythem/Cosine" alt="github contributors"/>
 	<br>
 </div>
