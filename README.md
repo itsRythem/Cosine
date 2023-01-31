@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-	Cosine is a free, source disclosed client modification for 
+	Cosine is a free, source disclosed client modification for Minecraft 1.12.2
 </p>
 
 <div align="center">
