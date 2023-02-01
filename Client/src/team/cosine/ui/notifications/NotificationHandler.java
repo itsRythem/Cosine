@@ -33,7 +33,7 @@ public class NotificationHandler extends Handler {
 		active.clear();
 	}
 	
-	public void render()
+	public void handle()
 	{
 		
 	}

@@ -2,7 +2,7 @@ package team.cosine;
 
 import net.minecraft.client.gui.Gui;
 import team.cosine.animation.Animation;
-import team.cosine.animation.Ease;
+import team.cosine.animation.Easing;
 import team.cosine.event.EventHandler;
 import team.cosine.event.api.EventHook;
 import team.cosine.event.impl.EventRenderGui;
@@ -40,9 +40,9 @@ public final class Core {
 	@EventHook
 	public void onRenderGui(final EventRenderGui event)
 	{
-		final double position = animation.animate(100, Ease.ElasticOut, 0.5);
-		
-		RenderUtil.drawRect(position * 50, 10, position * 50 + 20, 20, -1);
+		animation.animate((System.currentTimeMillis() % 2500 > 500 ? 100 : 300), 1, Easing.ELASTIC_OUT);
+
+        RenderUtil.drawRect(animation.getValue() + 60, 10, animation.getValue() + 80, 20, -1);
 	}
 	
 	public void unload()
