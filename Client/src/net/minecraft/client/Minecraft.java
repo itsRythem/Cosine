@@ -1255,7 +1255,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         long k = System.nanoTime();
         this.frameTimer.addFrame(k - this.startNanoTime);
-        Animation.DELTA = (k-this.startNanoTime)/1e+9;
         this.startNanoTime = k;
 
         while (getSystemTime() >= this.debugUpdateTime + 1000L)
